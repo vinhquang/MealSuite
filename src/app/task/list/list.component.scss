@@ -1,0 +1,32 @@
+
+.list-page {
+    padding: 16px;
+    table {
+        width: 100%;
+
+        .mat-column-actions {
+            width: 56px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .mat-column-add-more {
+            text-align: right;
+        }
+        .mat-column-add-assign {
+            text-align: center;
+        }
+        .mat-column-assign {
+            text-align: center;
+        }
+        .mat-column-completed {
+            text-align: center;
+            mat-chip-list {
+                display: inline-block;
+            }
+        }
+    }
+
+    .full-width {
+        width: 100%;
+    }
+}

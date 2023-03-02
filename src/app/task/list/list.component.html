@@ -1,0 +1,76 @@
+
+<div class="list-page">
+  <h2>Tasks</h2>
+  <div *ngIf="!(tasks|async) && !dataSource; else tasksResults">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+  <ng-template #tasksResults>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let element">{{element.id}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element">{{element.description}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="assign">
+        <th mat-header-cell *matHeaderCellDef>Assignee</th>
+        <td mat-cell *matCellDef="let element">
+          <button type="button" mat-raised-button [color]="element.assigneeId ? 'primary' : 'accent'" (click)="selectUserAssign(element.id)" [disabled]="isAdding || element.completed">{{element.assigneeId ? getUserName(element.assigneeId) : 'Assign'}}</button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="completed">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">
+          <mat-chip-list aria-label="Status">
+            <mat-chip *ngIf="!element.assigneeId && !element.completed">New</mat-chip>
+            <mat-chip color="accent" selected *ngIf="element.assigneeId && !element.completed">Processing</mat-chip>
+            <mat-chip color="primary" selected *ngIf="element.completed">Completed</mat-chip>
+          </mat-chip-list>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" justify="end">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <a [routerLink]="['/detail', element.id]" mat-mini-fab color="primary"><mat-icon>info</mat-icon></a>
+        </td>
+      </ng-container>
+
+      <!-- Add more fields -->
+      <ng-container matColumnDef="empty">
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+      <ng-container matColumnDef="add-description">
+        <td mat-footer-cell *matFooterCellDef>
+          <mat-form-field class="full-width">
+            <mat-label>New task</mat-label>
+            <input type="description" matInput [formControl]="descriptionFormControl" [errorStateMatcher]="matcher" placeholder="Description">
+            <mat-hint>Enter your task's description here!</mat-hint>
+            <mat-error *ngIf="descriptionFormControl.hasError('required')">
+              Description is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="add-assign">
+        <td mat-footer-cell *matFooterCellDef>
+          <button type="button" mat-raised-button (click)="selectUserNewTask()" [disabled]="isAdding">{{selectedUser ? selectedUser.name : 'Assign'}}</button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="add-more">
+        <td mat-footer-cell *matFooterCellDef>
+          <button type="button" mat-raised-button color="primary" (click)="saveNewTask()" [disabled]="isAdding">Add</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="['empty', 'add-description', 'add-assign', 'empty', 'add-more']"></tr>
+    </table>
+  </ng-template>
+</div>

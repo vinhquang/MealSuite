@@ -1,0 +1,24 @@
+
+<div class="detail-page">
+  <a [routerLink]="['/']" mat-raised-button color="primary"><mat-icon>arrow_back</mat-icon> Back</a>
+  <br /><br />
+
+  <mat-card class="" *ngIf="task">
+    <mat-card-title>Task #{{task.id}}</mat-card-title>
+    <mat-card-subtitle>{{user ? user.name : 'No assignee'}}</mat-card-subtitle>
+    <mat-card-content>
+      <p>
+        <mat-chip-list aria-label="Status">
+          <mat-chip *ngIf="!task.assigneeId && !task.completed">New</mat-chip>
+          <mat-chip color="accent" selected *ngIf="task.assigneeId && !task.completed">Processing</mat-chip>
+          <mat-chip color="primary" selected *ngIf="task.completed">Completed</mat-chip>
+        </mat-chip-list>
+      </p>
+      <p>{{task.description}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button type="button" mat-raised-button color="primary" (click)="completeTask(true)" [disabled]="isCompleting" *ngIf="!task.completed">Complete this task</button>
+      <button type="button" mat-raised-button color="warn" (click)="completeTask(false)" [disabled]="isCompleting" *ngIf="task.completed">Revert this task</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

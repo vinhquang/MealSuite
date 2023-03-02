@@ -1,0 +1,7 @@
+
+<h2>Select User</h2>
+<mat-selection-list [multiple]="false">
+  <mat-list-option *ngFor="let user of users|async" [value]="user.id" (click)="select(user.id)">
+    {{user.name}}
+  </mat-list-option>
+</mat-selection-list>
